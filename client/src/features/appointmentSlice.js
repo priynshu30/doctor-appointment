@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { API_URLS } from '../constants/api';
 
 const initialState = {
   appointments: [],
@@ -8,9 +7,6 @@ const initialState = {
   isLoading: false,
   message: '',
 };
-
-const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
-const API_URL = `${API_BASE}/api/appointments/`;
 
 // Create new appointment
 export const createAppointment = createAsyncThunk('appointments/create', async (appointmentData, thunkAPI) => {
@@ -21,7 +17,7 @@ export const createAppointment = createAsyncThunk('appointments/create', async (
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await axios.post(API_URL, appointmentData, config);
+    const response = await axios.post(API_URLS.appointments, appointmentData, config);
     return response.data;
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -38,7 +34,7 @@ export const getAppointments = createAsyncThunk('appointments/getAll', async (_,
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await axios.get(API_URL, config);
+    const response = await axios.get(API_URLS.appointments, config);
     return response.data;
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();

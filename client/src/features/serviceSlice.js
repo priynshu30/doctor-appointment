@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { API_URLS } from '../constants/api';
 
 const initialState = {
   services: [],
@@ -9,13 +8,10 @@ const initialState = {
   message: '',
 };
 
-const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
-const API_URL = `${API_BASE}/api/services/`;
-
 // Get all services
 export const getServices = createAsyncThunk('services/getAll', async (_, thunkAPI) => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(API_URLS.services);
     return response.data;
   } catch (error) {
     const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();

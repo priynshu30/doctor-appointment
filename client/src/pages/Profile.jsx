@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { updateProfile } from '../features/authSlice';
 import axios from 'axios';
 
+import { API_URLS } from '../constants/api';
+
 function Profile() {
   const { user } = useSelector((state) => state.auth);
   const [isEditing, setIsEditing] = useState(false);
@@ -33,8 +35,6 @@ function Profile() {
     formData.append('image', file);
     setUploading(true);
 
-    const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
-
     try {
       const config = {
         headers: {
@@ -42,7 +42,7 @@ function Profile() {
         },
       };
 
-      const { data } = await axios.post(`${API_BASE}/api/upload`, formData, config);
+      const { data } = await axios.post(API_URLS.upload, formData, config);
 
       dispatch(updateProfile({ profileImage: data }));
       setUploading(false);

@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { API_URLS } from '../constants/api';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -11,13 +10,10 @@ const initialState = {
   message: '',
 };
 
-const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
-const API_URL = `${API_BASE}/api/auth/`;
-
 // Register user
 export const register = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
   try {
-    const response = await axios.post(API_URL + 'register', userData);
+    const response = await axios.post(`${API_URLS.auth}/register`, userData);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
     }
@@ -31,7 +27,7 @@ export const register = createAsyncThunk('auth/register', async (userData, thunk
 // Login user
 export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
   try {
-    const response = await axios.post(API_URL + 'login', userData);
+    const response = await axios.post(`${API_URLS.auth}/login`, userData);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
     }
@@ -51,7 +47,7 @@ export const updateProfile = createAsyncThunk('auth/updateProfile', async (userD
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await axios.put(`${API_URL}profile`, userData, config);
+    const response = await axios.put(`${API_URLS.auth}/profile`, userData, config);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
     }
