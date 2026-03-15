@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://doctor-appointment-backend-priynshu30.onrender.com/api/:path*"
+      "destination": "https://doctor-appointment-backend-wn5w.onrender.com/api/:path*"
     },
     {
       "source": "/uploads/:path*",
-      "destination": "https://doctor-appointment-backend-priynshu30.onrender.com/uploads/:path*"
+      "destination": "https://doctor-appointment-backend-wn5w.onrender.com/uploads/:path*"
     },
     {
       "source": "/(.*)",
