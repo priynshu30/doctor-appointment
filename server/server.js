@@ -12,6 +12,9 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 dotenv.config();
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+console.log(`Running in ${NODE_ENV} mode`);
+
 connectDB();
 
 const app = express();
