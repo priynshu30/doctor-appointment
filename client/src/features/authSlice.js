@@ -11,7 +11,8 @@ const initialState = {
   message: '',
 };
 
-const API_URL = '/api/auth/';
+const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
+const API_URL = `${API_BASE}/api/auth/`;
 
 // Register user
 export const register = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
@@ -50,7 +51,7 @@ export const updateProfile = createAsyncThunk('auth/updateProfile', async (userD
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await axios.put(API_URL + 'profile', userData, config);
+    const response = await axios.put(`${API_URL}profile`, userData, config);
     if (response.data) {
       localStorage.setItem('user', JSON.stringify(response.data));
     }

@@ -9,7 +9,8 @@ const initialState = {
   message: '',
 };
 
-const API_URL = '/api/appointments/';
+const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
+const API_URL = `${API_BASE}/api/appointments/`;
 
 // Create new appointment
 export const createAppointment = createAsyncThunk('appointments/create', async (appointmentData, thunkAPI) => {

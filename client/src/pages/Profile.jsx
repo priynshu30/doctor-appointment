@@ -33,6 +33,8 @@ function Profile() {
     formData.append('image', file);
     setUploading(true);
 
+    const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
+
     try {
       const config = {
         headers: {
@@ -40,7 +42,7 @@ function Profile() {
         },
       };
 
-      const { data } = await axios.post('/api/upload', formData, config);
+      const { data } = await axios.post(`${API_BASE}/api/upload`, formData, config);
 
       dispatch(updateProfile({ profileImage: data }));
       setUploading(false);
@@ -68,7 +70,11 @@ function Profile() {
               <div className="w-32 h-32 bg-white rounded-full p-1 shadow-2xl">
                 <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-4xl text-gray-500 overflow-hidden">
                   {user?.profileImage ? (
-                    <img src={user.profileImage} alt="profile" className="w-full h-full object-cover" />
+                    <img 
+                      src={user.profileImage.startsWith('http') ? user.profileImage : `https://doctor-appointment-backend-wn5w.onrender.com${user.profileImage}`} 
+                      alt="profile" 
+                      className="w-full h-full object-cover" 
+                    />
                   ) : (
                     <FaUser />
                   )}

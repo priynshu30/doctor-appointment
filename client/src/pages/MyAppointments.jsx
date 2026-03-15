@@ -88,7 +88,7 @@ function MyAppointments() {
                 {app.reports && (
                   <div className="mb-6">
                     <a 
-                      href={app.reports} 
+                      href={app.reports.startsWith('http') ? app.reports : `https://doctor-appointment-backend-wn5w.onrender.com${app.reports}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-100 transition-colors"

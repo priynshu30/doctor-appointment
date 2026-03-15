@@ -55,6 +55,8 @@ function BookAppointment() {
     formData.append('image', file);
     setUploading(true);
 
+    const API_BASE = window.location.hostname === 'localhost' ? '' : 'https://doctor-appointment-backend-wn5w.onrender.com';
+
     try {
       const config = {
         headers: {
@@ -62,7 +64,7 @@ function BookAppointment() {
         },
       };
 
-      const { data } = await axios.post('/api/upload', formData, config);
+      const { data } = await axios.post(`${API_BASE}/api/upload`, formData, config);
       setFormData((prev) => ({ ...prev, reports: data }));
       setUploading(false);
     } catch (error) {
