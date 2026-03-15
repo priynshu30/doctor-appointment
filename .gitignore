@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Production
+client/dist/
+
+# Environment Variables
+.env
+server/.env
+
+# Local Uploads
+server/uploads/
+
+# IDE / OS Files
+.vscode/
+.idea/
+.DS_Store
+*.log
+npm-debug.log*
+
+# Testing
+client/coverage/
