@@ -1,7 +1,5 @@
 const isDev = import.meta.env.DEV;
-export const API_BASE = isDev
-  ? 'http://localhost:5000' 
-  : 'https://doctor-appointment-backend-wn5w.onrender.com';
+export const API_BASE = isDev ? 'http://localhost:5000' : '';
 export const resolveApiAssetUrl = (path = '') =>
   path.startsWith('http') ? path : `${API_BASE}${path}`;
 
