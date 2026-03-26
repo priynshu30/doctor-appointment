@@ -34,6 +34,18 @@ function Services() {
 
   const displayServices = services.length > 0 ? services : mockServices;
 
+  if (isLoading) {
+    return <div className="container mx-auto px-4 py-20 text-center">Loading services...</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center text-red-600">
+        {message || 'Unable to load services right now.'}
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-20 min-h-screen">
       <div className="text-center mb-16">

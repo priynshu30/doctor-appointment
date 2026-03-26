@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaStethoscope } from 'react-icons/fa';
 
 function Footer() {
@@ -17,26 +18,26 @@ function Footer() {
         <div>
           <h4 className="text-white font-bold mb-6 uppercase tracking-wider">Quick Links</h4>
           <ul className="space-y-4">
-            <li><a href="/" className="hover:text-blue-500 transition-colors">Home</a></li>
-            <li><a href="/services" className="hover:text-blue-500 transition-colors">Services</a></li>
-            <li><a href="/doctors" className="hover:text-blue-500 transition-colors">Our Doctors</a></li>
+            <li><Link to="/" className="hover:text-blue-500 transition-colors">Home</Link></li>
+            <li><Link to="/services" className="hover:text-blue-500 transition-colors">Services</Link></li>
+            <li><Link to="/book-appointment" className="hover:text-blue-500 transition-colors">Book Appointment</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-white font-bold mb-6 uppercase tracking-wider">Support</h4>
           <ul className="space-y-4">
-            <li><a href="#" className="hover:text-blue-500 transition-colors">Help Center</a></li>
-            <li><a href="#" className="hover:text-blue-500 transition-colors">Contact Us</a></li>
-            <li><a href="#" className="hover:text-blue-500 transition-colors">Privacy Policy</a></li>
+            <li><Link to="/services" className="hover:text-blue-500 transition-colors">Help Center</Link></li>
+            <li><Link to="/profile" className="hover:text-blue-500 transition-colors">Contact Us</Link></li>
+            <li><Link to="/register" className="hover:text-blue-500 transition-colors">Privacy Policy</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-white font-bold mb-6 uppercase tracking-wider">Follow Us</h4>
           <div className="flex gap-4 text-2xl">
-            <a href="#" className="hover:text-blue-500"><FaFacebook /></a>
-            <a href="#" className="hover:text-blue-500"><FaTwitter /></a>
-            <a href="#" className="hover:text-blue-500"><FaInstagram /></a>
-            <a href="#" className="hover:text-blue-500"><FaLinkedin /></a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-blue-500"><FaFacebook /></a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-blue-500"><FaTwitter /></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-blue-500"><FaInstagram /></a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-blue-500"><FaLinkedin /></a>
           </div>
         </div>
       </div>

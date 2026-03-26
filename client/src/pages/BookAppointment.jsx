@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createAppointment, reset } from '../features/appointmentSlice';
-import { motion } from 'framer-motion';
 import { FaCalendarAlt, FaClock, FaStethoscope, FaRegCommentDots, FaCloudUploadAlt, FaChevronRight, FaSync } from 'react-icons/fa';
 import axios from 'axios';
 import { API_URLS } from '../constants/api';
@@ -26,6 +25,7 @@ function BookAppointment() {
     additionalComments: '',
     reports: '',
   });
+  const [feedback, setFeedback] = useState({ type: '', text: '' });
 
   const { date, time, doctorType, additionalComments, reports } = formData;
   const dispatch = useDispatch();
@@ -36,17 +36,17 @@ function BookAppointment() {
   const fileInputRef = React.useRef(null);
 
   useEffect(() => {
-    if (isError) {
-      alert(message);
-    }
     if (isSuccess) {
-      alert('Appointment booked successfully!');
       navigate('/my-appointments');
     }
-    dispatch(reset());
-  }, [isSuccess, isError, message, navigate, dispatch]);
+  }, [isSuccess, navigate]);
+
+  useEffect(() => () => dispatch(reset()), [dispatch]);
 
   const onChange = (e) => {
+    if (feedback.text) {
+      setFeedback({ type: '', text: '' });
+    }
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -65,22 +65,27 @@ function BookAppointment() {
 
       const { data } = await axios.post(API_URLS.upload, formData, config);
       setFormData((prev) => ({ ...prev, reports: data }));
+      setFeedback({ type: 'success', text: 'Report uploaded successfully.' });
       setUploading(false);
     } catch (error) {
       console.error(error);
       setUploading(false);
-      alert('Error uploading file');
+      setFeedback({ type: 'error', text: 'Error uploading file.' });
     }
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (!date || !time || !doctorType) {
-      alert('Please fill at least Date, Time and Doctor Type');
+      setFeedback({ type: 'error', text: 'Please fill at least date, time, and doctor type.' });
       return;
     }
+    setFeedback({ type: '', text: '' });
     dispatch(createAppointment(formData));
   };
+
+  const feedbackMessage = feedback.text || (isError ? message || 'Unable to book your appointment right now.' : '');
+  const feedbackType = feedback.text ? feedback.type : (isError ? 'error' : '');
 
   return (
     <div className="container mx-auto px-4 py-20 max-w-5xl">
@@ -111,6 +116,18 @@ function BookAppointment() {
 
         <div className="md:w-2/3 p-12">
           <form onSubmit={onSubmit} className="space-y-8">
+            {feedbackMessage && (
+              <div
+                className={`rounded-2xl px-4 py-3 text-sm ${
+                  feedbackType === 'error'
+                    ? 'border border-red-200 bg-red-50 text-red-700'
+                    : 'border border-green-200 bg-green-50 text-green-700'
+                }`}
+              >
+                {feedbackMessage}
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-gray-500 uppercase tracking-wider ml-1">Appointment Date</label>

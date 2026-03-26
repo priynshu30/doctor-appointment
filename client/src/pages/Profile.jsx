@@ -4,13 +4,14 @@ import { FaUser, FaPhone, FaEnvelope, FaCamera, FaEdit, FaSync } from 'react-ico
 import { motion } from 'framer-motion';
 import { updateProfile } from '../features/authSlice';
 import axios from 'axios';
-
-import { API_URLS } from '../constants/api';
+import { API_URLS, resolveApiAssetUrl } from '../constants/api';
 
 function Profile() {
   const { user } = useSelector((state) => state.auth);
+  const { isLoading, isError, message } = useSelector((state) => state.auth);
   const [isEditing, setIsEditing] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [feedback, setFeedback] = useState({ type: '', text: '' });
   const [formData, setFormData] = useState({
     name: user?.name || '',
     contactNumber: user?.contactNumber || '',
@@ -19,8 +20,14 @@ function Profile() {
   const { name, contactNumber } = formData;
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
+  const memberSince = user?.createdAt
+    ? new Date(user.createdAt).toLocaleDateString()
+    : 'N/A';
 
   const onChange = (e) => {
+    if (feedback.text) {
+      setFeedback({ type: '', text: '' });
+    }
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -45,11 +52,12 @@ function Profile() {
       const { data } = await axios.post(API_URLS.upload, formData, config);
 
       dispatch(updateProfile({ profileImage: data }));
+      setFeedback({ type: 'success', text: 'Profile image uploaded successfully.' });
       setUploading(false);
     } catch (error) {
       console.error(error);
       setUploading(false);
-      alert('Error uploading image');
+      setFeedback({ type: 'error', text: 'Error uploading image.' });
     }
   };
 
@@ -71,7 +79,7 @@ function Profile() {
                 <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-4xl text-gray-500 overflow-hidden">
                   {user?.profileImage ? (
                     <img 
-                      src={user.profileImage.startsWith('http') ? user.profileImage : `https://doctor-appointment-backend-wn5w.onrender.com${user.profileImage}`} 
+                      src={resolveApiAssetUrl(user.profileImage)}
                       alt="profile" 
                       className="w-full h-full object-cover" 
                     />
@@ -99,6 +107,18 @@ function Profile() {
         </div>
 
         <div className="pt-20 px-10 pb-10">
+          {(feedback.text || isError) && (
+            <div
+              className={`mb-6 rounded-2xl px-4 py-3 text-sm ${
+                isError || feedback.type === 'error'
+                  ? 'border border-red-200 bg-red-50 text-red-700'
+                  : 'border border-green-200 bg-green-50 text-green-700'
+              }`}
+            >
+              {feedback.text || message}
+            </div>
+          )}
+
           <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
             <div>
               {isEditing ? (
@@ -116,9 +136,10 @@ function Profile() {
             </div>
             <button 
               onClick={isEditing ? onSave : () => setIsEditing(true)}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all font-bold shadow-lg"
+              disabled={isLoading}
+              className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all font-bold shadow-lg disabled:bg-blue-300"
             >
-              {isEditing ? <><FaSync /> Save Profile</> : <><FaEdit /> Edit Profile</>}
+              {isEditing ? <>{isLoading ? <FaSync className="animate-spin" /> : <FaSync />} Save Profile</> : <><FaEdit /> Edit Profile</>}
             </button>
           </div>
 
@@ -159,7 +180,7 @@ function Profile() {
               <h3 className="text-lg font-bold text-blue-800 mb-4">Account Stats</h3>
               <div className="flex justify-between items-center mb-6">
                 <span className="text-gray-600">Member Since</span>
-                <span className="font-bold text-gray-800">{new Date(user.createdAt || Date.now()).toLocaleDateString()}</span>
+                <span className="font-bold text-gray-800">{memberSince}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-gray-600">Health Score</span>

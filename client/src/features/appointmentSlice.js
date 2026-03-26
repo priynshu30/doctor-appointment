@@ -48,12 +48,15 @@ export const appointmentSlice = createSlice({
   name: 'appointment',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(createAppointment.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+        state.message = '';
       })
       .addCase(createAppointment.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -67,6 +70,8 @@ export const appointmentSlice = createSlice({
       })
       .addCase(getAppointments.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.message = '';
       })
       .addCase(getAppointments.fulfilled, (state, action) => {
         state.isLoading = false;

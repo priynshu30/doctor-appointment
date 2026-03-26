@@ -10,6 +10,7 @@ function Login() {
     email: '',
     password: '',
   });
+  const [formError, setFormError] = useState('');
 
   const { email, password } = formData;
   const navigate = useNavigate();
@@ -20,18 +21,17 @@ function Login() {
   );
 
   useEffect(() => {
-    if (isError) {
-      alert(message);
-    }
-
     if (isSuccess || user) {
       navigate('/profile');
     }
-
-    dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
+  useEffect(() => () => dispatch(reset()), [dispatch]);
+
   const onChange = (e) => {
+    if (formError) {
+      setFormError('');
+    }
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -41,9 +41,10 @@ function Login() {
   const onSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
-      alert('Please fill all fields');
+      setFormError('Please fill in both email and password.');
       return;
     }
+    setFormError('');
     dispatch(login(formData));
   };
 
@@ -63,6 +64,12 @@ function Login() {
         </div>
 
         <form onSubmit={onSubmit} className="space-y-6">
+          {(formError || isError) && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {formError || message}
+            </div>
+          )}
+
           <div className="relative">
             <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -92,7 +99,7 @@ function Login() {
           </div>
 
           <div className="flex justify-end pr-2">
-            <a href="#" className="text-sm text-blue-600 font-semibold hover:underline">Forgot password?</a>
+            <span className="text-sm text-gray-500">Password reset is not available yet.</span>
           </div>
 
           <button

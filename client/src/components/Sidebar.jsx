@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { FaUser, FaCalendarAlt, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { logout, reset } from '../features/authSlice';
+import { resolveApiAssetUrl } from '../constants/api';
 
 function Sidebar({ isOpen, toggleSidebar }) {
   const { user } = useSelector((state) => state.auth);
@@ -41,7 +42,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
           <div className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white text-4xl mb-4 border-4 border-white shadow-lg overflow-hidden">
             {user.profileImage ? (
               <img 
-                src={user.profileImage.startsWith('http') ? user.profileImage : `https://doctor-appointment-backend-wn5w.onrender.com${user.profileImage}`} 
+                src={resolveApiAssetUrl(user.profileImage)}
                 alt="profile" 
                 className="w-full h-full object-cover" 
               />

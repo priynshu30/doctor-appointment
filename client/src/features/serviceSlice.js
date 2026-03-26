@@ -25,12 +25,15 @@ export const serviceSlice = createSlice({
   name: 'service',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
   },
   extraReducers: (builder) => {
     builder
       .addCase(getServices.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+        state.message = '';
       })
       .addCase(getServices.fulfilled, (state, action) => {
         state.isLoading = false;

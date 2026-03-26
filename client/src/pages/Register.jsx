@@ -12,6 +12,7 @@ function Register() {
     password: '',
     contactNumber: '',
   });
+  const [formError, setFormError] = useState('');
 
   const { name, email, password, contactNumber } = formData;
   const navigate = useNavigate();
@@ -22,18 +23,17 @@ function Register() {
   );
 
   useEffect(() => {
-    if (isError) {
-      alert(message);
-    }
-
     if (isSuccess || user) {
       navigate('/profile');
     }
-
-    dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
+  useEffect(() => () => dispatch(reset()), [dispatch]);
+
   const onChange = (e) => {
+    if (formError) {
+      setFormError('');
+    }
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -43,9 +43,10 @@ function Register() {
   const onSubmit = (e) => {
     e.preventDefault();
     if (!name || !email || !password || !contactNumber) {
-      alert('Please fill all fields');
+      setFormError('Please complete all required fields.');
       return;
     }
+    setFormError('');
     dispatch(register(formData));
   };
 
@@ -62,6 +63,12 @@ function Register() {
         </div>
 
         <form onSubmit={onSubmit} className="space-y-6">
+          {(formError || isError) && (
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              {formError || message}
+            </div>
+          )}
+
           <div className="relative">
             <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -123,7 +130,7 @@ function Register() {
             disabled={isLoading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
           >
-            {isLoading ? 'Processing...' : 'Register'} <span className="text-xl">🚀</span>
+            {isLoading ? 'Processing...' : 'Register'} <FaArrowRight />
           </button>
         </form>
 

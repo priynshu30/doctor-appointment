@@ -3,9 +3,26 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import FAQ from '../components/FAQ';
 import { FaUserMd, FaCalendarCheck, FaClipboardList, FaArrowRight } from 'react-icons/fa';
-
-// Placeholder for banner image (I'll use the generated one's name)
-const BANNER_IMG = '/hospital_banner_1773570844616.png'; // This will be handled by vite in dev or I should copy it to public
+const featureCards = [
+  {
+    icon: <FaUserMd />,
+    title: 'Expert Doctors',
+    desc: 'Highly qualified specialists with years of experience in their respective fields.',
+    accentClass: 'bg-blue-100 text-blue-600 group-hover:bg-blue-600',
+  },
+  {
+    icon: <FaCalendarCheck />,
+    title: 'Easy Booking',
+    desc: 'Simple and intuitive appointment scheduling system available 24/7.',
+    accentClass: 'bg-green-100 text-green-600 group-hover:bg-green-600',
+  },
+  {
+    icon: <FaClipboardList />,
+    title: 'Digital Reports',
+    desc: 'Access your medical records and lab reports securely from anywhere.',
+    accentClass: 'bg-violet-100 text-violet-600 group-hover:bg-violet-600',
+  },
+];
 
 function Home() {
   return (
@@ -75,32 +92,13 @@ function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {[
-              { 
-                icon: <FaUserMd />, 
-                title: "Expert Doctors", 
-                desc: "Highly qualified specialists with years of experience in their respective fields.",
-                color: "blue"
-              },
-              { 
-                icon: <FaCalendarCheck />, 
-                title: "Easy Booking", 
-                desc: "Simple and intuitive appointment scheduling system available 24/7.",
-                color: "green"
-              },
-              { 
-                icon: <FaClipboardList />, 
-                title: "Digital Reports", 
-                desc: "Access your medical records and lab reports securely from anywhere.",
-                color: "purple"
-              }
-            ].map((f, i) => (
+            {featureCards.map((f, i) => (
               <motion.div 
                 key={i}
                 whileHover={{ y: -10 }}
                 className="p-10 rounded-3xl bg-gray-50 border border-gray-100 transition-all hover:shadow-2xl group"
               >
-                <div className={`text-4xl mb-6 p-4 rounded-2xl inline-block bg-${f.color}-100 text-${f.color}-600 group-hover:bg-${f.color}-600 group-hover:text-white transition-colors`}>
+                <div className={`text-4xl mb-6 p-4 rounded-2xl inline-block transition-colors group-hover:text-white ${f.accentClass}`}>
                   {f.icon}
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-gray-800">{f.title}</h3>

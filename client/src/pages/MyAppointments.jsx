@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAppointments, reset } from '../features/appointmentSlice';
 import { motion } from 'framer-motion';
 import { FaCalendarCheck, FaClock, FaStethoscope, FaFilter, FaFileAlt } from 'react-icons/fa';
+import { resolveApiAssetUrl } from '../constants/api';
 
 function MyAppointments() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ function MyAppointments() {
     : appointments.filter(app => new Date(app.date).getFullYear().toString() === filterYear);
 
   if (isLoading) return <div className="p-20 text-center">Loading your health sessions...</div>;
+  if (isError) return <div className="p-20 text-center text-red-600">{message || 'Unable to load your appointments right now.'}</div>;
 
   return (
     <div className="container mx-auto px-4 py-20 min-h-screen">
@@ -88,7 +90,7 @@ function MyAppointments() {
                 {app.reports && (
                   <div className="mb-6">
                     <a 
-                      href={app.reports.startsWith('http') ? app.reports : `https://doctor-appointment-backend-wn5w.onrender.com${app.reports}`} 
+                      href={resolveApiAssetUrl(app.reports)}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-100 transition-colors"
