@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaStethoscope } from 'react-icons/fa';
 
+const apiDocsUrl = 'https://doctor-appointment-backend-wn5w.onrender.com/api-docs';
+
 function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 py-12">
@@ -29,6 +31,16 @@ function Footer() {
             <li><Link to="/services" className="hover:text-blue-500 transition-colors">Help Center</Link></li>
             <li><Link to="/profile" className="hover:text-blue-500 transition-colors">Contact Us</Link></li>
             <li><Link to="/register" className="hover:text-blue-500 transition-colors">Privacy Policy</Link></li>
+            <li>
+              <a
+                href={apiDocsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-blue-500 transition-colors"
+              >
+                API Documentation
+              </a>
+            </li>
           </ul>
         </div>
         <div>
